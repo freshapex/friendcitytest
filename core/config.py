@@ -42,6 +42,13 @@ class Settings(BaseSettings):
 
     FIRST_SUPERUSER: str="freshapex"
     FIRST_SUPERUSER_PASSWORD: str="123321"
+    FIRST_SUPERUSER_EMAIL: str="sppmor@126.com"
+    FIRST_SHUSER: str="shuser1"
+    FIRST_SHUSER_PASSWORD: str="123321"
+    FIRST_SHUSER_EMAIL: str="sppmor@126.com"
+    FIRST_FCUSER: str="fcuser1"
+    FIRST_FCUSER_PASSWORD: str="123321"
+    FIRST_FCUSER_EMAIL: str="sppmor@126.com"
 
     class Config:
         case_sensitive = True

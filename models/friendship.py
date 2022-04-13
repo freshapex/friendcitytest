@@ -1,16 +1,21 @@
-from .base import Base
+from email.policy import default
+from db.base_class import Base
 
-from sqlalchemy import Column,String,Integer,Boolean,DateTime,ForeignKey
+from sqlalchemy import Column,String,Integer,Boolean,DateTime,Date,ForeignKey
 from sqlalchemy.orm import relationship
 
-class Friendship(Base):    
+from datetime import datetime
+
+class Friendship(Base):  
+
+    __tablename__ = "friendship"    
        
     id = Column(Integer,primary_key=True,index=True)
     filename = Column(String,index=True)
     shcitysignman = Column(String,nullable=False)
     innercitysignman = Column(String,nullable=False)
-    signtime = Column(DateTime)
-    modifytime = Column(DateTime)    
+    signtime = Column(Date,default=datetime.date)
+    modifytime = Column(Date,default=datetime.date,onupdate=datetime.date)    
     is_available = Column(Boolean(),default=False)
 
     
@@ -19,4 +24,7 @@ class Friendship(Base):
     
     shcity = relationship("ShCity",back_populates="friendcity")
     friendcity = relationship("FriendCity",back_populates="shcity")
+
+    create_time= Column(DateTime,default=datetime.now)
+    update_time= Column(DateTime,default=datetime.now,onupdate=datetime.now)
     

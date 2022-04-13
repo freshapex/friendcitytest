@@ -1,14 +1,28 @@
-from models import friendcity, friendship
-from .base import CityBase
-
-from sqlalchemy import Column,Integer,ForeignKey
+from sqlalchemy import Column,String,Integer,Boolean,DateTime,ForeignKey
 from sqlalchemy.orm import relationship
 
-class ShCity(CityBase):
-    is_shcity = True
-    is_friendcity = False
+from db.base_class import Base
 
-    shuser_id = Column(Integer,ForeignKey("shuser.id"))
-    shuser = relationship("ShUser",back_populates="shcity")
+from datetime import datetime
 
-    friendcity = relationship("Friendship",back_populates="friendcity")
+
+class ShCity(Base):  
+
+    __tablename__ = "shcity"  
+
+    id = Column(Integer,primary_key=True,index=True)
+    cityname = Column(String,index=True)
+    
+    province = Column(String,index=True)
+    telephone = Column(Integer,index=True)
+    tax = Column(Integer,index=True)
+    cityaddress = Column(String)
+    content = Column(String)
+
+    create_time= Column(DateTime,default=datetime.now)
+    update_time= Column(DateTime,default=datetime.now,onupdate=datetime.now)
+
+    user_id = Column(Integer,ForeignKey("user.id"))
+    
+
+    friendcity = relationship("Friendship",back_populates="shcity")
