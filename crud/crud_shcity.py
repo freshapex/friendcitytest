@@ -19,6 +19,24 @@ class CRUDShCity(CRUDBase[ShCity, CityCreate, CityUpdate]):
         db.commit()
         db.refresh(db_obj)
         return db_obj
+    
+    def get_cityname_by_cityid(self,db:Session,*,cityid:int):
+        shcity = self.get(db,id=cityid)
+        return shcity.cityname
+
+
+    def get_userid_by_cityid(self,db:Session,*,cityid:int):
+        shcity = self.get(db,id=cityid)         
+        return shcity.user_id
+
+    def get_cityid_by_cityname(self,db:Session,*,cityname:str):
+        city = db.query(ShCity).filter(ShCity.cityname==cityname).first()
+        return city.id
+
+    def get_userid_by_cityname(self,db:Session,*,cityname:str):
+        shcity = self.get(db,id=cityname)
+        return shcity.user_id
+
 
     def get_multi_by_user(
         self, db: Session, *, user_id: int, skip: int = 0, limit: int = 100

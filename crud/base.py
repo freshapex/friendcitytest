@@ -23,7 +23,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-    def get(self, db: Session, id: Any) -> Optional[ModelType]:
+    def get(self, db: Session, id: Any) -> Optional[ModelType]:     # 注意这里id 为 Any 类型 id 赋值应该是任意类型的赋值
         return db.query(self.model).filter(self.model.id == id).first()
 
     def get_multi(

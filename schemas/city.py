@@ -30,7 +30,7 @@ class CityUpdate(CityBase):
 
 # Properties shared by models stored in DB
 class CityInDBBase(CityBase):
-    id: int
+    id: Optional[int] = None
     cityname: str
     user_id: int
 

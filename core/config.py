@@ -40,9 +40,9 @@ class Settings(BaseSettings):
     EMAILS_FROM_EMAIL: Optional[EmailStr] = None
     EMAILS_FROM_NAME: Optional[str] = None
 
-    FIRST_SUPERUSER: str="freshapex"
-    FIRST_SUPERUSER_PASSWORD: str="123321"
-    FIRST_SUPERUSER_EMAIL: str="sppmor@126.com"
+    FIRST_MANAGER: str="manager1"
+    FIRST_MANAGER_PASSWORD: str="123321"
+    FIRST_MANAGER_EMAIL: str="sppmor@126.com"
     FIRST_SHUSER: str="shuser1"
     FIRST_SHUSER_PASSWORD: str="123321"
     FIRST_SHUSER_EMAIL: str="sppmor@126.com"

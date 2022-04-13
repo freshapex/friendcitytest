@@ -12,6 +12,14 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_by_username(self, db: Session, *, username: str) -> Optional[User]:
         return db.query(User).filter(User.username == username).first()
 
+    def get_userid_by_username(self,db:Session,*,username:str):
+        shuser = self.get(db,id=username)
+        return shuser.id
+    
+    def get_username_by_userid(self,db:Session,*,userid:int):
+        shuser = self.get(db,id=userid)
+        return shuser.username
+
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
             username=obj_in.username,

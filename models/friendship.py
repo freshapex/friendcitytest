@@ -1,4 +1,5 @@
 from email.policy import default
+from textwrap import indent
 from db.base_class import Base
 
 from sqlalchemy import Column,String,Integer,Boolean,DateTime,Date,ForeignKey
@@ -12,15 +13,15 @@ class Friendship(Base):
        
     id = Column(Integer,primary_key=True,index=True)
     filename = Column(String,index=True)
-    shcitysignman = Column(String,nullable=False)
-    innercitysignman = Column(String,nullable=False)
-    signtime = Column(Date,default=datetime.date)
-    modifytime = Column(Date,default=datetime.date,onupdate=datetime.date)    
+    shcitysignman = Column(String)
+    friendcitysignman = Column(String)
+    signtime = Column(Date,default=datetime.now().date)
+    modifytime = Column(Date,default=datetime.now().date,onupdate=datetime.now().date)    
     is_available = Column(Boolean(),default=False)
 
     
-    shcity_id = Column(Integer,ForeignKey("shcity.id"))
-    friendcity_id = Column(Integer,ForeignKey("friendcity.id"))
+    shcity_id = Column(Integer,ForeignKey("shcity.id"),index=True)
+    friendcity_id = Column(Integer,ForeignKey("friendcity.id"),index=True)
     
     shcity = relationship("ShCity",back_populates="friendcity")
     friendcity = relationship("FriendCity",back_populates="shcity")

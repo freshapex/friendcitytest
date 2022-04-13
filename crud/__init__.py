@@ -2,3 +2,5 @@
 # 一般有多少个model ，对应有 多少张表，对应有多少个crud文件
 from .crud_user import user
 from .crud_shcity import shcity
+from .crud_friendcity import friendcity
+from .crud_friendship import friendship
