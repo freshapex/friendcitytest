@@ -11,17 +11,17 @@ class User(Base):
     __tablename__ = "user"
         
     id = Column(Integer,primary_key=True,index=True)
-    username = Column(String,index=True)
-    hashed_password = Column(String,nullable=False)
-    email = Column(String,nullable=False)
+    username = Column(String(30),index=True)
+    hashed_password = Column(String(500),nullable=False)
+    email = Column(String(30),nullable=False)
     telephone = Column(Integer,index=True)
     tax = Column(Integer,index=True)
-    useraddress = Column(String)
-    content = Column(String)
+    useraddress = Column(String(100))
+    content = Column(String(500))
 
-    is_activer = Column(Boolean(),default=True)
-    is_shuser = Column(Boolean(),index=True)
-    is_fcuser = Column(Boolean(),index=True)
+    is_active = Column(Boolean(),default=True)
+    is_shuser = Column(Boolean(),default=False)
+    is_fcuser = Column(Boolean(),default=False)
     is_manager = Column(Boolean(),default=False)    
     
     create_time= Column(DateTime,default=datetime.now)

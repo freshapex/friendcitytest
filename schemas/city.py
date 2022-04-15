@@ -3,29 +3,25 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-# Shared properties
+# Shared properties    所谓共享就是在数据库，API，都有的属性
 class CityBase(BaseModel):
-    id: Optional[int] = None
-    cityname : Optional[str] =None
-    
+           
     province : Optional[str] =None
     telephone : Optional[int] =None
     tax : Optional[int] =None
     cityaddress : Optional[str] =None
-    content : Optional[str] =None
-
-    user_id: Optional[int] = None
-
+    content : Optional[str] =None   
 
 
 # Properties to receive on City creation
 class CityCreate(CityBase):
     cityname: str
+    province: str
 
 
-# Properties to receive on City update
+# Properties to receive on City update   
 class CityUpdate(CityBase):
-    pass
+    pass                # 属性跟citybase 一样，用户不能更新 cityname,id,user_id
 
 
 # Properties shared by models stored in DB
@@ -35,7 +31,7 @@ class CityInDBBase(CityBase):
     user_id: int
 
     class Config:
-        orm_mode = True
+        orm_mode = True  # 必须设置为True
 
 
 # Properties to return to client

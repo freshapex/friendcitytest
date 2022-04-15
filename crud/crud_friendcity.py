@@ -11,7 +11,7 @@ from schemas.city import CityCreate,CityUpdate  # 从schema 导出，相同的�
 
 
 class CRUDFriendCity(CRUDBase[FriendCity, CityCreate, CityUpdate]):
-    def create_with_user(
+    def create_city_with_user(
         self, db: Session, *, obj_in: CityCreate, user_id: int
     ) -> FriendCity:
         obj_in_data = jsonable_encoder(obj_in)
@@ -21,24 +21,29 @@ class CRUDFriendCity(CRUDBase[FriendCity, CityCreate, CityUpdate]):
         db.refresh(db_obj)
         return db_obj
 
-    def get_cityname_by_cityid(self,db:Session,*,cityid:int):
-        city = self.get(db,id=cityid)
-        return city.cityname
+    def get_city_by_cityname(self,db:Session,*,cityname:str):
+        friendcity = db.query(FriendCity).filter(FriendCity.cityname==cityname).first()
+        return friendcity
+
+    
+    def get_city_by_cityid(self,db:Session,*,cityid:int):
+        friendcity = db.query(FriendCity).filter(FriendCity.id==cityid).first()
+        return friendcity
 
 
-    def get_userid_by_cityid(self,db:Session,*,cityid:int):
-        city = self.get(db,id=cityid)         
-        return city.user_id
+    def get_user_by_cityid(self,db:Session,*,cityid:int):
+        friendcity = db.query(FriendCity).filter(FriendCity.cityid==cityid).first()
+        user = db.query(models.User).filter(models.User.id==friendcity.user_id).first()       
+        return user
+    
 
-    def get_cityid_by_cityname(self,db:Session,*,cityname:str):
-        city = db.query(FriendCity).filter(FriendCity.cityname==cityname).first()
-        return city.id
+    def get_user_by_cityname(self,db:Session,*,cityname:str):
+        friendcity = db.query(FriendCity).filter(FriendCity.cityname==cityname).first()
+        user = db.query(models.User).filter(models.User.id==friendcity.user_id).first()  
+        return user
 
-    def get_userid_by_cityname(self,db:Session,*,cityname:str):
-        city = self.get(db,id=cityname)
-        return city.user_id
 
-    def get_multi_by_user(
+    def get_multi_by_userid(
         self, db: Session, *, user_id: int, skip: int = 0, limit: int = 100
     ) -> List[FriendCity]:
         return (
@@ -50,4 +55,4 @@ class CRUDFriendCity(CRUDBase[FriendCity, CityCreate, CityUpdate]):
         )
 
 
-friendcity = CRUDFriendCity(FriendCity)  # 通过创建具体的实例（引用实例相应的方法），来实现对具体的表的CRUD操作，因此，一般以表名命名变量
+friendcity_crud = CRUDFriendCity(FriendCity)  # 通过创建具体的实例（引用实例相应的方法），来实现对具体的表的CRUD操作，因此，一般以表名命名变量

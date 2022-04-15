@@ -14,7 +14,7 @@ def init_db(db:Session) ->None:
 
 
     # 创建第一个ShUser，插入数据库user表
-    user = crud.user.get_by_username(db, username=settings.FIRST_SHUSER)
+    user = crud.user_crud.get_by_username(db, username=settings.FIRST_SHUSER)
     if not user:
         user_in = schemas.UserCreate(
             username=settings.FIRST_SHUSER,
@@ -24,11 +24,11 @@ def init_db(db:Session) ->None:
             is_manager= False,
             email= settings.FIRST_SHUSER_EMAIL
         )
-        user = crud.user.create(db, obj_in=user_in)  # 创建第一个ShUser
+        user = crud.user_crud.create(db, obj_in=user_in)  # 创建第一个ShUser
 
     
     # 创建第一个FcUser，插入数据库user表
-    user = crud.user.get_by_username(db, username=settings.FIRST_FCUSER)
+    user = crud.user_crud.get_by_username(db, username=settings.FIRST_FCUSER)
     if not user:
         user_in = schemas.UserCreate(
             username=settings.FIRST_FCUSER,
@@ -38,11 +38,11 @@ def init_db(db:Session) ->None:
             is_manager= False,
             email= settings.FIRST_FCUSER_EMAIL
         )
-        user = crud.user.create(db, obj_in=user_in)  # 创建第一个FcUser
+        user = crud.user_crud.create(db, obj_in=user_in)  # 创建第一个FcUser
 
     
     # 创建第一个Manager，，插入数据库user表
-    user = crud.user.get_by_username(db, username=settings.FIRST_MANAGER)
+    user = crud.user_crud.get_by_username(db, username=settings.FIRST_MANAGER)
     if not user:
         user_in = schemas.UserCreate(
             username=settings.FIRST_MANAGER,
@@ -52,41 +52,41 @@ def init_db(db:Session) ->None:
             is_manager= True,
             email= settings.FIRST_MANAGER_EMAIL
         )
-        user = crud.user.create(db, obj_in=user_in)  # 创建第一个ShUser
+        user = crud.user_crud.create(db, obj_in=user_in)  # 创建第一个ShUser
 
     
     # 创建第一个ShCity，插入shcity表
     shcityname = "嘉定区"
-    shcity = crud.shcity.get(db,id=shcityname)
+    shcity = crud.shcity_crud.get(db,id=shcityname)
     if not shcity:
         shcity_in = schemas.CityCreate(
             cityname=shcityname,
             user_id= 1           
         )
-        shcity = crud.shcity.create(db, obj_in=shcity_in)  # 创建第一个ShCity
+        shcity = crud.shcity_crud.create(db, obj_in=shcity_in)  # 创建第一个ShCity
 
 
     # 创建第一个FriendCity，插入friendcity表
     friendcityname = "西安市"
-    friendcity = crud.friendcity.get(db,id=friendcityname)
+    friendcity = crud.friendcity_crud.get(db,id=friendcityname)
     if not friendcity:
         friendcity_in = schemas.CityCreate(
             cityname=friendcityname,
             user_id= 2           
         )
-        friendcity = crud.friendcity.create(db, obj_in=friendcity_in)  # 创建第一个FriendCity
+        friendcity = crud.friendcity_crud.create(db, obj_in=friendcity_in)  # 创建第一个FriendCity
 
 
     # 创建第一个Friendship，插入friendship表
-    shcity_id = crud.shcity.get_cityid_by_cityname(db=db,cityname=shcityname)
-    friendcity_id = crud.friendcity.get_cityid_by_cityname(db=db,cityname=friendcityname)
-    friendship = crud.friendship.get_by_shcity_and_friendcity_id(db=db,shcityid=shcity_id,friendcityid=friendcity_id)
+    shcity = crud.shcity_crud.get_city_by_cityname(db=db,cityname=shcityname)
+    friendcity = crud.friendcity_crud.get_city_by_cityname(db=db,cityname=friendcityname)
+    friendship = crud.friendship_crud.get_by_shcity_and_friendcity_id(db=db,shcityid=shcity.id,friendcityid=friendcity.id)
     if not friendship:
         friendship_in = schemas.FriendshipCreate(
-            shcity_id = shcity_id,
-            friendcity_id= friendcity_id          
+            shcity_id = shcity.id,
+            friendcity_id= friendcity.id          
         )
-        friendship = crud.friendship.create(db, obj_in=friendship_in)  # 创建第一个Friendship
+        friendship = crud.friendship_crud.create(db, obj_in=friendship_in)  # 创建第一个Friendship
 
     
 

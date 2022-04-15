@@ -12,9 +12,9 @@ class Friendship(Base):
     __tablename__ = "friendship"    
        
     id = Column(Integer,primary_key=True,index=True)
-    filename = Column(String,index=True)
-    shcitysignman = Column(String)
-    friendcitysignman = Column(String)
+    filename = Column(String(50),index=True)
+    shcitysignman = Column(String(20))
+    friendcitysignman = Column(String(20))
     signtime = Column(Date,default=datetime.now().date)
     modifytime = Column(Date,default=datetime.now().date,onupdate=datetime.now().date)    
     is_available = Column(Boolean(),default=False)

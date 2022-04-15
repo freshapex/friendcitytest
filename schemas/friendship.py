@@ -36,7 +36,7 @@ class FriendshipUpdate(FriendshipBase):
 # Properties shared by models stored in DB
 class FriendshipInDBBase(FriendshipBase):
     id: Optional[int] = None
-    shcity_id: str
+    shcity_id: int
     friendcity_id: int
 
     class Config:

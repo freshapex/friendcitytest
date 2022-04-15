@@ -11,13 +11,13 @@ class ShCity(Base):
     __tablename__ = "shcity"  
 
     id = Column(Integer,primary_key=True,index=True)
-    cityname = Column(String,index=True)
+    cityname = Column(String(30),index=True)
     
-    province = Column(String,index=True)
+    province = Column(String(20),index=True)
     telephone = Column(Integer,index=True)
     tax = Column(Integer,index=True)
-    cityaddress = Column(String)
-    content = Column(String)
+    cityaddress = Column(String(100))
+    content = Column(String(500))
 
     create_time= Column(DateTime,default=datetime.now)
     update_time= Column(DateTime,default=datetime.now,onupdate=datetime.now)

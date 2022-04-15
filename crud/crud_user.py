@@ -19,15 +19,16 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_username_by_userid(self,db:Session,*,userid:int):
         shuser = self.get(db,id=userid)
         return shuser.username
+        
 
-    def create(self, db: Session, *, obj_in: UserCreate) -> User:
+    def create(self, db: Session, *, obj_in: UserCreate, is_shuser:bool=False, is_fcuser:bool=False, is_manager:bool=False) -> User:
         db_obj = User(
             username=obj_in.username,
             hashed_password=get_password_hash(obj_in.password),
             email = obj_in.email,
-            is_shuser = obj_in.is_shuser,
-            is_fcuser = obj_in.is_fcuser,
-            is_manager=obj_in.is_manager,
+            is_shuser = is_shuser,
+            is_fcuser = is_fcuser,
+            is_manager=is_manager,
         )
         db.add(db_obj)
         db.commit()
@@ -48,7 +49,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
     def authenticate(self, db: Session, *, username: str, password: str) -> Optional[User]:
-        user = self.get_by_username(db=db,username=user)
+        user = self.get_by_username(db=db,username=username)
         if not user:
             return None
         if not verify_password(password, user.hashed_password):
@@ -68,4 +69,4 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return user.is_manager
 
 
-user = CRUDUser(User)
+user_crud = CRUDUser(User)

@@ -29,16 +29,16 @@ class CRUDFriendship(CRUDBase[Friendship, FriendshipCreate, FriendshipUpdate]):
     def get_by_shcity_and_friendcity_id(self, db: Session, *, shcityid: int,friendcityid:int) -> Optional[Friendship]:
         return db.query(Friendship).filter(Friendship.shcity_id==shcityid,Friendship.friendcity_id==friendcityid).first()
 
-    # def create(self, db: Session, *, obj_in: FriendshipCreate) -> Friendship:
+    def create(self, db: Session, *, obj_in: FriendshipCreate) -> Friendship:
                      
-    #     db_obj = Friendship(
-    #         shcity_id= obj_in.shcity_id,
-    #         friendcity_id = obj_in.friendcity_id
-    #     )
-    #     db.add(db_obj)
-    #     db.commit()
-    #     db.refresh(db_obj)
-    #     return db_obj
+        db_obj = Friendship(
+            shcity_id= obj_in.shcity_id,
+            friendcity_id = obj_in.friendcity_id
+        )
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
 
     
 
@@ -64,4 +64,4 @@ class CRUDFriendship(CRUDBase[Friendship, FriendshipCreate, FriendshipUpdate]):
     #     )
 
 
-friendship = CRUDFriendship(Friendship)  # 通过创建具体的实例（引用实例相应的方法），来实现对具体的表的CRUD操作，因此，一般以表名命名变量
+friendship_crud = CRUDFriendship(Friendship)  # 通过创建具体的实例（引用实例相应的方法），来实现对具体的表的CRUD操作，因此，一般以表名命名变量
