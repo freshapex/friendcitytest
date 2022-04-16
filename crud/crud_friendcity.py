@@ -32,7 +32,7 @@ class CRUDFriendCity(CRUDBase[FriendCity, CityCreate, CityUpdate]):
 
 
     def get_user_by_cityid(self,db:Session,*,cityid:int):
-        friendcity = db.query(FriendCity).filter(FriendCity.cityid==cityid).first()
+        friendcity = db.query(FriendCity).filter(FriendCity.id==cityid).first()
         user = db.query(models.User).filter(models.User.id==friendcity.user_id).first()       
         return user
     
@@ -43,7 +43,7 @@ class CRUDFriendCity(CRUDBase[FriendCity, CityCreate, CityUpdate]):
         return user
 
 
-    def get_multi_by_userid(
+    def get_city_by_userid(
         self, db: Session, *, user_id: int, skip: int = 0, limit: int = 100
     ) -> List[FriendCity]:
         return (

@@ -10,8 +10,24 @@ from schemas import city
 router = APIRouter()
 
 
-@router.get("/", response_model=List[schemas.City])
+@router.get("/allcity", response_model=List[schemas.City])
 def read_all_city(
+    db: Session = Depends(deps.get_db),
+    skip: int = 0,
+    limit: int = 100,
+    current_user: models.User = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    检索所有shcity,需要manager权限
+    """
+    if crud.user_crud.is_manager(current_user):
+        city = crud.shcity_crud.get_multi(db, skip=skip, limit=limit)    
+    else:
+        raise HTTPException(status_code=400, detail="Not enough permissions")
+    return city
+
+@router.get("/mycity", response_model=List[schemas.City])
+def read_my_city(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
@@ -20,9 +36,8 @@ def read_all_city(
     """
     检索user名下对应的city
     """
-    if crud.user_crud.is_manager(current_user):
-        city = crud.user_crud.get_multi(db, skip=skip, limit=limit)
-    elif crud.user_crud.is_shuser(current_user):
+    
+    if crud.user_crud.is_shuser(current_user):
         city = crud.shcity_crud.get_city_by_userid(db=db, user_id=current_user.id, skip=skip, limit=limit)
     else:
         raise HTTPException(status_code=400, detail="Not enough permissions")
@@ -53,7 +68,7 @@ def create_city(
     
 ### 通过cityname CRUD shcity
 @router.get("/cityname/{cityname}", response_model=schemas.City)
-def read_city(
+def read_city_by_cityname(
     *,
     db: Session = Depends(deps.get_db),
     cityname: str,
@@ -71,7 +86,7 @@ def read_city(
     return city
 
 @router.put("/cityname/{cityname}", response_model=schemas.City)
-def update_city(
+def update_city_by_cityname(
     *,
     db: Session = Depends(deps.get_db),
     cityname: str,
@@ -91,7 +106,7 @@ def update_city(
 
 
 @router.delete("/cityname/{cityname}", response_model=schemas.City)
-def delete_city(
+def delete_city_by_cityname(
     *,
     db: Session = Depends(deps.get_db),
     cityname: str,
@@ -111,7 +126,7 @@ def delete_city(
 
 ###  通过id CRUD shcity
 @router.get("/cityid/{id}", response_model=schemas.City)
-def read_city(
+def read_city_by_cityid(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
@@ -128,7 +143,7 @@ def read_city(
     return city
 
 @router.put("/cityid/{id}", response_model=schemas.City)
-def update_city(
+def update_city_by_cityid(
     *,
     db: Session = Depends(deps.get_db),
     id: int,
@@ -148,7 +163,7 @@ def update_city(
 
 
 @router.delete("/cityid/{id}", response_model=schemas.City)
-def delete_city(
+def delete_city_by_cityid(
     *,
     db: Session = Depends(deps.get_db),
     id: int,

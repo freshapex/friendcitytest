@@ -28,22 +28,14 @@ def read_user_me(
 def update_user_me(
     *,
     db: Session = Depends(deps.get_db),
-    username: str = Body(None),
-    password: str = Body(None),        
+    user_in : schemas.UserUpdate ,   
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
-    更新user自己的信息。
-    """
-    current_user_data = jsonable_encoder(current_user)
-    user_in = schemas.UserUpdate(**current_user_data)
-    if username is not None:
-        user_in.username = username
-    if password is not None:
-        user_in.password = password    
+    更新user自己的信息。    """
+     
     user = crud.user_crud.update(db, db_obj=current_user, obj_in=user_in)
     return user
-
 
 
 

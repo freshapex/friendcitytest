@@ -15,9 +15,11 @@ class Friendship(Base):
     filename = Column(String(50),index=True)
     shcitysignman = Column(String(20))
     friendcitysignman = Column(String(20))
-    signtime = Column(Date,default=datetime.now().date)
-    modifytime = Column(Date,default=datetime.now().date,onupdate=datetime.now().date)    
-    is_available = Column(Boolean(),default=False)
+    # signtime = Column(Date,default=datetime.now().date)
+    # modifytime = Column(Date,default=datetime.now().date,onupdate=datetime.now().date)  
+    signtime = Column(String(30))
+    modifytime = Column(String(30))    
+    is_available = Column(Boolean(),default=True)
 
     
     shcity_id = Column(Integer,ForeignKey("shcity.id"),index=True)

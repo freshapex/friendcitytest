@@ -2,6 +2,7 @@ from typing import Optional
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
+import crud
 
 from crud.base import CRUDBase
 
@@ -11,8 +12,14 @@ from schemas.friendship import FriendshipCreate,FriendshipUpdate  # 从schema �
 
 class CRUDFriendship(CRUDBase[Friendship, FriendshipCreate, FriendshipUpdate]):
 
-    def get_by_id(self, db: Session, *, id: int) -> Optional[Friendship]:
-        return db.query(Friendship).filter(Friendship.id == id).first()
+    def get_all_friendship(
+        self, db: Session, *, skip: int = 0, limit: int = 100
+    ) -> list[Friendship]:
+        return db.query(self.model).offset(skip).limit(limit).all()
+
+
+    def get_by_friendshipid(self, db: Session, *, friendcityid: int) -> Optional[Friendship]:
+        return db.query(Friendship).filter(Friendship.id == friendcityid).first()
 
     def get_by_shcityid(self, db: Session, *, shcityid: int):
         return db.query(Friendship).filter(Friendship.shcity_id == shcityid).all()
@@ -21,47 +28,26 @@ class CRUDFriendship(CRUDBase[Friendship, FriendshipCreate, FriendshipUpdate]):
         return db.query(Friendship).filter(Friendship.friendcity_id == friendcityid).all()
 
     def get_by_shcityname(self, db: Session, *, shcityname: str):
-        return db.query(Friendship).filter(Friendship.shcity == shcityname).all()
+        shcity = crud.shcity_crud.get_city_by_cityname(db=db,cityname=shcityname)        
+        return db.query(Friendship).filter(Friendship.shcity_id==shcity.id).all()
 
     def get_by_friendcityname(self, db: Session, *, friendcityname: str):
-        return db.query(Friendship).filter(Friendship.friendcity == friendcityname).all()
+        friendcity = crud.friendcity_crud.get_city_by_cityname(db=db,cityname=friendcityname)
+        return db.query(Friendship).filter(Friendship.friendcity_id == friendcity.id).all()
 
     def get_by_shcity_and_friendcity_id(self, db: Session, *, shcityid: int,friendcityid:int) -> Optional[Friendship]:
         return db.query(Friendship).filter(Friendship.shcity_id==shcityid,Friendship.friendcity_id==friendcityid).first()
 
     def create(self, db: Session, *, obj_in: FriendshipCreate) -> Friendship:
+        obj_in_data = jsonable_encoder(obj_in)
                      
-        db_obj = Friendship(
-            shcity_id= obj_in.shcity_id,
-            friendcity_id = obj_in.friendcity_id
-        )
+        db_obj = Friendship(**obj_in_data)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
 
     
-
-    # def create_with_user(
-    #     self, db: Session, *, obj_in: FriendshipCreate, user_id: int
-    # ) -> Friendship:
-    #     obj_in_data = jsonable_encoder(obj_in)
-    #     db_obj = self.model(**obj_in_data, user_id=user_id)
-    #     db.add(db_obj)
-    #     db.commit()
-    #     db.refresh(db_obj)
-    #     return db_obj
-
-    # def get_multi_by_user(
-    #     self, db: Session, *, user_id: int, skip: int = 0, limit: int = 100
-    # ) -> list[Friendship]:
-    #     return (
-    #         db.query(self.model)
-    #         .filter(Friendship.user_id == user_id)
-    #         .offset(skip)
-    #         .limit(limit)
-    #         .all()
-    #     )
-
+    
 
 friendship_crud = CRUDFriendship(Friendship)  # 通过创建具体的实例（引用实例相应的方法），来实现对具体的表的CRUD操作，因此，一般以表名命名变量

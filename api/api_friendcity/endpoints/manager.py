@@ -129,12 +129,7 @@ def update_user_me(
     """
     Update own user.
     """
-    # current_user_data = jsonable_encoder(current_user)
-    # user_in = schemas.UserUpdate(**current_user_data)
-    # if username is not None:
-    #     user_in.username = username
-    # if password is not None:
-    #     user_in.password = password       
+     
     user = crud.user_crud.update(db, db_obj=current_user, obj_in=user_in)
     return user
 
@@ -257,7 +252,7 @@ def update_user_by_name(
     current_user: models.User = Depends(deps.get_current_active_manager),
 ) -> Any:
     """
-    Update a user.
+    Update a user by username.
     """
     user = crud.user_crud.get_by_username(db, username=username)
     if not user:
@@ -271,6 +266,30 @@ def update_user_by_name(
         )
     user = crud.user_crud.update(db, db_obj=user, obj_in=user_in)
     return user
+
+@router.delete("/username/{username}", response_model=schemas.User)
+def update_user_by_name(
+    *,
+    db: Session = Depends(deps.get_db),
+    username: str,    
+    current_user: models.User = Depends(deps.get_current_active_manager),
+) -> Any:
+    """
+    Delete a user by username.
+    """
+    user = crud.user_crud.get_by_username(db, username=username)
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="The user with this username does not exist in the system",
+        )
+    if not crud.user_crud.is_manager(current_user):
+        raise HTTPException(
+            status_code=400, detail="The user doesn't have enough privileges"
+        )
+    user = crud.user_crud.remove(db=db,id=user.id)
+    return user
+
 
 @router.get("/userid/{user_id}", response_model=schemas.User)
 def read_user_by_id(
@@ -300,7 +319,7 @@ def update_user_by_id(
     current_user: models.User = Depends(deps.get_current_active_manager),
 ) -> Any:
     """
-    Update a user.
+    Update a user by id.
     """
     user = crud.user_crud.get(db, id=user_id)
     if not user:
@@ -313,4 +332,27 @@ def update_user_by_id(
             status_code=400, detail="The user doesn't have enough privileges"
         )
     user = crud.user_crud.update(db, db_obj=user, obj_in=user_in)
+    return user
+
+@router.delete("/userid/{user_id}", response_model=schemas.User)
+def update_user_by_id(
+    *,
+    db: Session = Depends(deps.get_db),
+    user_id: int,
+    current_user: models.User = Depends(deps.get_current_active_manager),
+) -> Any:
+    """
+    Delete a user by user_id.
+    """
+    user = crud.user_crud.get(db, id=user_id)
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="The user with this username does not exist in the system",
+        )
+    if not crud.user_crud.is_manager(current_user):
+        raise HTTPException(
+            status_code=400, detail="The user doesn't have enough privileges"
+        )
+    user = crud.user_crud.remove(db=db,id=user_id)
     return user

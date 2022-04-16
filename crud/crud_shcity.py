@@ -33,7 +33,7 @@ class CRUDShCity(CRUDBase[ShCity, CityCreate, CityUpdate]):
 
 
     def get_user_by_cityid(self,db:Session,*,cityid:int):
-        shcity = db.query(ShCity).filter(ShCity.cityid==cityid).first()
+        shcity = db.query(ShCity).filter(ShCity.id==cityid).first()
         user = db.query(models.User).filter(models.User.id==shcity.user_id).first()       
         return user
     

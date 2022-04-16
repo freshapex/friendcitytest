@@ -1,26 +1,20 @@
 from typing import Optional
 
-from pydantic import BaseModel,PastDate
+from pydantic import BaseModel
 
 from datetime import datetime
 
 
 # Shared properties
 class FriendshipBase(BaseModel):
-
-    id: Optional[int] = None
+    
     filename : Optional[str] =None    
     shcitysignman : Optional[str] =None
     friendcitysignman : Optional[str] =None
-    signtime : Optional[PastDate] =None
-    modifytime : Optional[PastDate] =None
+    signtime : Optional[str] =None
+    modifytime : Optional[str] =None
     is_available : Optional[bool] = True
-    
-
-    shcity_id: Optional[int] = None
-    friendcity_id:Optional[int] = None
-
-
+        
 
 # Properties to receive on Friendship creation
 class FriendshipCreate(FriendshipBase):
@@ -30,7 +24,7 @@ class FriendshipCreate(FriendshipBase):
 
 # Properties to receive on City update
 class FriendshipUpdate(FriendshipBase):
-    pass
+    id: int
 
 
 # Properties shared by models stored in DB

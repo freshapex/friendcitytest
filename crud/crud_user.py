@@ -2,6 +2,8 @@ from typing import Any, Dict, Optional, Union
 
 from sqlalchemy.orm import Session
 
+from fastapi.encoders import jsonable_encoder
+
 from core.security import get_password_hash, verify_password
 from .base import CRUDBase
 from models.user import User
@@ -22,14 +24,17 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         
 
     def create(self, db: Session, *, obj_in: UserCreate, is_shuser:bool=False, is_fcuser:bool=False, is_manager:bool=False) -> User:
-        db_obj = User(
-            username=obj_in.username,
-            hashed_password=get_password_hash(obj_in.password),
-            email = obj_in.email,
-            is_shuser = is_shuser,
-            is_fcuser = is_fcuser,
-            is_manager=is_manager,
-        )
+        obj_in_data = jsonable_encoder(obj_in)
+        db_obj = User(**obj_in_data,is_shuser = is_shuser,is_fcuser = is_fcuser,is_manager= is_manager)
+        db_obj.hashed_password=get_password_hash(obj_in.password)        
+        # db_obj = User(
+        #     username=obj_in.username,
+        #     hashed_password=get_password_hash(obj_in.password),
+        #     email = obj_in.email,
+        #     is_shuser = is_shuser,
+        #     is_fcuser = is_fcuser,
+        #     is_manager= is_manager,
+        # )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)

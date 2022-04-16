@@ -17,12 +17,12 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     SECRET_KEY: str = secrets.token_urlsafe(32)
     SERVER_NAME: str ="friendcityship"
-    SERVER_HOST: AnyHttpUrl="http://127.0.0.1"
+    SERVER_HOST: AnyHttpUrl="http://127.0.0.1:8000"
 
 
     # SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
-    # SQLALCHEMY_DATABASE_URL: str="sqlite:///./sql_friendcitytest.db"
-    SQLALCHEMY_DATABASE_URL:str="mysql+pymysql://root:Mysql123!@47.103.18.195/fc_relationship"
+    SQLALCHEMY_DATABASE_URL: str="sqlite:///./sql_friendcitytest.db"
+    # SQLALCHEMY_DATABASE_URL:str="mysql+pymysql://root:Mysql123!@47.103.18.195/fc_relationship"
 
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \

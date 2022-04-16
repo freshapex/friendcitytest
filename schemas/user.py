@@ -40,7 +40,9 @@ class UserInDBBase(UserBase):
 
 # Additional properties to return via API   通过API返回给frontend/client的属性,额外属性，一般同时也是数据库的属性
 class User(UserInDBBase):   # the same as UserInDBBase,一般同时也是数据库的属性(除密码)
-    pass
+    is_shuser:Optional[bool]
+    is_fcuser: Optional[bool]
+    is_manager:Optional[bool]
 
 
 # Additional properties stored in DB  通过API返回给frontend/client的属性,额外属性，一般是在 数据库UserInDBBase的属性上（包含）
