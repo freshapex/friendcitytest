@@ -1,4 +1,6 @@
+from sys import hash_info
 from typing import Any, Dict, Optional, Union
+from argon2 import hash_password
 
 from sqlalchemy.orm import Session
 
@@ -24,9 +26,12 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         
 
     def create(self, db: Session, *, obj_in: UserCreate, is_shuser:bool=False, is_fcuser:bool=False, is_manager:bool=False) -> User:
-        obj_in_data = jsonable_encoder(obj_in)
+        obj_in_data = jsonable_encoder(obj_in)        
+        obj_in_data["hashed_password"] = get_password_hash(obj_in_data.pop("password"))  # 字典dict的pop方法，删除某个键及其对应的值，返回的是该键对应的值
+        # db_obj.hashed_password=get_password_hash(obj_in.password)
         db_obj = User(**obj_in_data,is_shuser = is_shuser,is_fcuser = is_fcuser,is_manager= is_manager)
-        db_obj.hashed_password=get_password_hash(obj_in.password)        
+        
+        # del obj_in.password        
         # db_obj = User(
         #     username=obj_in.username,
         #     hashed_password=get_password_hash(obj_in.password),

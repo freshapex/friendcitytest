@@ -1,2 +1,5 @@
 sql_friendcitytest.db
 core/config.py
+initial_data.py
+db/init_db.py
+

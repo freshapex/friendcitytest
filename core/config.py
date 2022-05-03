@@ -21,8 +21,8 @@ class Settings(BaseSettings):
 
 
     # SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
-    SQLALCHEMY_DATABASE_URL: str="sqlite:///./sql_friendcitytest.db"
-    # SQLALCHEMY_DATABASE_URL:str="mysql+pymysql://root:Mysql123!@47.103.18.195/fc_relationship"
+    # SQLALCHEMY_DATABASE_URL: str="sqlite:///./sql_friendcitytest.db"
+    SQLALCHEMY_DATABASE_URL:str="mysql+pymysql://root:Mysql123!@47.103.18.195/friendcity_test"
 
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
